@@ -6,9 +6,10 @@
 package invoicesystem;
 
 import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.LinkedList;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.LinkedList;
+//import java.math.BigDecimal;
 /**
  *
  * @author hassanmessaoudi
@@ -23,16 +24,19 @@ public class Contact {
     private String contactPhoneNum;
     private String notes;
     private Map<String, Integer> workLocations; //key= contact's loc, val= distance in km
-    private Map<String, Float> standardRates; // key= shiftName, val= shiftRate
+    private Map<String, Double> standardRates; // key= shiftName, val= shiftRate
     private int vat;
-    private float travelAllowance; //Allowance per km
+    private double travelAllowance; //Allowance per km
 
     public Contact(String customerCompanyName) {
-        if(InvoiceSystem.getCustomerCompanyNames().contains(customerCompanyName)){
+        //DOUBLY CHECKED IN InvoiceSystem.createContact()
+        if(InvoiceSystem.getCustomerCompanies().containsKey(customerCompanyName)){
             throw new IllegalArgumentException(customerCompanyName);
         } else {
             this.customerCompanyName = customerCompanyName;
         }
+        
+        
     }
 
     @Override
@@ -104,11 +108,11 @@ public class Contact {
         this.workLocations = workLocations;
     }
 
-    public Map<String, Float> getStandardRates() {
+    public Map<String, Double> getStandardRates() {
         return standardRates;
     }
 
-    public void setStandardRates(Map<String, Float> standardRates) {
+    public void setStandardRates(Map<String, Double> standardRates) {
         this.standardRates = standardRates;
     }
 
@@ -120,11 +124,19 @@ public class Contact {
         this.vat = vat;
     }
 
-    public float getTravelAllowance() {
+    /**
+     *
+     * @return
+     */
+    public double getTravelAllowance() {
         return travelAllowance;
     }
 
-    public void setTravelAllowance(float travelAllowance) {
+    /**
+     *
+     * @param travelAllowance
+     */
+    public void setTravelAllowance(double travelAllowance) {
         this.travelAllowance = travelAllowance;
     }
     
