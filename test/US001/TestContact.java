@@ -10,10 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
 import static org.junit.Assert.*;
+import org.junit.Rule;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import org.hamcrest.CoreMatchers.*;
+import org.junit.rules.ExpectedException;
 
 
 
@@ -24,6 +26,9 @@ import org.hamcrest.CoreMatchers.*;
 public class TestContact {
     
     Contact contact;
+    
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     
     @Before
     public void setUp(){
@@ -64,6 +69,7 @@ public class TestContact {
     @After
     public void tearDown(){
         contact = null;
+        InvoiceSystem.getCompanies().clear();
     
     }
     
@@ -81,7 +87,7 @@ public class TestContact {
     
     @Test
     public void testLastName() {
-       assertEquals("Willemsenn", contact.getLastName());
+       assertEquals("Wayne", contact.getLastName());
     }
     
     @Test
@@ -115,7 +121,7 @@ public class TestContact {
     
     @Test
     public void testTravelAllowance(){
-        assertEquals(50.00, contact.getTravelAllowance(), 0.0);
+        assertEquals(1.2, contact.getTravelAllowance(), 0.0);
     }
     
     @Test
@@ -139,8 +145,11 @@ public class TestContact {
     @Test
     public void createContact_existingContact(){
         String companyName = "Test Inc.";
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(companyName);
         contact = new Contact(companyName);
-        
+        //IllegalArgumentException e = new IllegalArgumentException(companyName);
+        //assertEquals(e, new Contact(companyName));
     }
 
 }

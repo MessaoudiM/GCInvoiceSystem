@@ -31,11 +31,11 @@ public class Contact {
 
     public Contact(String companyName) {
         //DOUBLY CHECKED IN InvoiceSystem.createContact()
-        if(InvoiceSystem.getCompanies()
-                .containsKey(companyName)){
+        if(InvoiceSystem.getCompanies().containsKey(companyName)){
             throw new IllegalArgumentException(companyName);
         } else {
             this.companyName = companyName;
+            InvoiceSystem.getCompanies().put(companyName, this);
             //add to InvoiceSystem.companies (setCompanies pull push)
         }
         

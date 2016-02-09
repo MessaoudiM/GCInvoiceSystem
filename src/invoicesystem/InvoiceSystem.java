@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class InvoiceSystem {
     
-    private static Map<String, Contact> companies;
+    private static Map<String, Contact> companies = new HashMap<>();
     //private static Contact contact;
     private static InvoiceSystem instance = null;
 
@@ -25,7 +25,7 @@ public class InvoiceSystem {
     //************************************************************************
     //              CONSTRUCTOR
     protected InvoiceSystem(){
-        companies = new HashMap<>();
+        //companies = new HashMap<>();
     }
     
     public static InvoiceSystem getInstance(){
