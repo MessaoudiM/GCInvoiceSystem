@@ -16,24 +16,27 @@ import java.util.Map;
  */
 public class Contact {
     
-    private String customerCompanyName;
+    private String companyName;
     private String invoiceAddress;
-    private String contactFirstName;
-    private String contactLastName;
-    private String contactEmailAddress;
-    private String contactPhoneNum;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private String phoneNum;
     private String notes;
-    private Map<String, Integer> workLocations; //key= contact's loc, val= distance in km
+    private Map<String, Integer> workLocations; //key= contact's loc, 
+                                                //val= distance in km
     private Map<String, Double> standardRates; // key= shiftName, val= shiftRate
     private int vat;
     private double travelAllowance; //Allowance per km
 
-    public Contact(String customerCompanyName) {
+    public Contact(String companyName) {
         //DOUBLY CHECKED IN InvoiceSystem.createContact()
-        if(InvoiceSystem.getCustomerCompanies().containsKey(customerCompanyName)){
-            throw new IllegalArgumentException(customerCompanyName);
+        if(InvoiceSystem.getCompanies()
+                .containsKey(companyName)){
+            throw new IllegalArgumentException(companyName);
         } else {
-            this.customerCompanyName = customerCompanyName;
+            this.companyName = companyName;
+            //add to InvoiceSystem.companies (setCompanies pull push)
         }
         
         
@@ -41,15 +44,16 @@ public class Contact {
 
     @Override
     public String toString() {
-        return getCustomerCompanyName();
+        return getCompanyName();
     }
 
-    public String getCustomerCompanyName() {
-        return customerCompanyName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCustomerCompanyName(String customerCompanyName) {
-        this.customerCompanyName = customerCompanyName;
+    public void setCompanyName(String companyName) {
+        //CHECK WHETHER THIS ONE EXISTST IN InvoiceSystem.customerCompanies
+        this.companyName = companyName;
     }
 
     public String getInvoiceAddress() {
@@ -60,36 +64,36 @@ public class Contact {
         this.invoiceAddress = invoiceAddress;
     }
 
-    public String getContactFirstName() {
-        return contactFirstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setContactFirstName(String contactFirstName) {
-        this.contactFirstName = contactFirstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getContactLastName() {
-        return contactLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setContactLastName(String contactLastName) {
-        this.contactLastName = contactLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getContactEmailAddress() {
-        return contactEmailAddress;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setContactEmailAddress(String contactEmailAddress) {
-        this.contactEmailAddress = contactEmailAddress;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
-    public String getContactPhoneNum() {
-        return contactPhoneNum;
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
-    public void setContactPhoneNum(String contactPhoneNum) {
-        this.contactPhoneNum = contactPhoneNum;
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     public String getNotes() {
@@ -138,6 +142,7 @@ public class Contact {
      */
     public void setTravelAllowance(double travelAllowance) {
         this.travelAllowance = travelAllowance;
+       
     }
     
     
@@ -145,6 +150,6 @@ public class Contact {
    
             
             
-            
+           
     
 }

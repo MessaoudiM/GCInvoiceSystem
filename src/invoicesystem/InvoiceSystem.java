@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class InvoiceSystem {
     
-    private static Map<String, Contact> customerCompanies;
+    private static Map<String, Contact> companies;
     //private static Contact contact;
     private static InvoiceSystem instance = null;
 
@@ -25,7 +25,7 @@ public class InvoiceSystem {
     //************************************************************************
     //              CONSTRUCTOR
     protected InvoiceSystem(){
-        customerCompanies = new HashMap<>();
+        companies = new HashMap<>();
     }
     
     public static InvoiceSystem getInstance(){
@@ -44,27 +44,26 @@ public class InvoiceSystem {
         
     }
 
-    public static Map<String, Contact> getCustomerCompanies() {
-        return customerCompanies;
+    public static Map<String, Contact> getCompanies() {
+        return companies;
     }
 
     /**
      *
-     * @param customerCompanies
+     * @param companies
      */
-    public static void setCustomerCompanies(Map<String, 
-            Contact> customerCompanies) {
-        InvoiceSystem.customerCompanies = customerCompanies;
+    public static void setCompanies(Map<String, Contact> companies) {
+        InvoiceSystem.companies = companies;
     }
 
     /**
      * 
-     * @param customerCompanyName 
+     * @param companyName 
      * @return  Contact
      * 
      */
-    public Contact createContact(String customerCompanyName){
-        //Check to see if the customerCompanyName is already in use
+    public Contact createContact(String companyName){
+        //Check to see if the companyName is already in use
         /*
         if(getCustomerCompanies().isEmpty()){
         Contact contact = new Contact(customerCompanyName);
@@ -72,13 +71,13 @@ public class InvoiceSystem {
         return contact;
         */
         
-        if(!getCustomerCompanies().containsKey(customerCompanyName)){
-            Contact contact = new Contact(customerCompanyName);
-            getCustomerCompanies().put(customerCompanyName, contact);
+        if(!getCompanies().containsKey(companyName)){
+            Contact contact = new Contact(companyName);
+            getCompanies().put(companyName, contact);
             return contact;
         
         } else {
-            throw new IllegalArgumentException(customerCompanyName);
+            throw new IllegalArgumentException(companyName);
         }
     }
     

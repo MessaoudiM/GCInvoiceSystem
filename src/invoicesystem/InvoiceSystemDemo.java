@@ -40,16 +40,25 @@ public class InvoiceSystemDemo {
         createDemoContact();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-     
-    public void createDemoContact(){
+    
+    /**
+     * 
+     * @return Contact
+     */
+    public Contact createDemoContact(){
     // create demo contact
         Contact contact;
         contact = invoiceSystem.createContact("Willemsen BV");
-        contact.setContactFirstName("Joop");
-        contact.setContactLastName("Willemsen");
-        contact.setContactPhoneNum("0612345678");
-        contact.setContactEmailAddress("administratie@willemsenbv.nl");
+        contact.setFirstName("Joop");
+        contact.setLastName("Willemsen");
+        contact.setPhoneNum("0612345678");
+        contact.setEmailAddress("administratie@willemsenbv.nl");
         contact.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");
+        contact.setNotes("xxxxxxxxxx");
+        contact.setTravelAllowance(1.20);
+        contact.setVat(21);
+        
+        
         Map<String, Double> ratesMap;
         ratesMap = new HashMap<>();
         String shift = "Dag";
@@ -59,12 +68,12 @@ public class InvoiceSystemDemo {
         rate = 80.00;
         ratesMap.put(shift, rate);
         contact.setStandardRates(ratesMap);
-        contact.setNotes("xxxxxxxxxx");
-        contact.setTravelAllowance(1.20);
-        contact.setVat(21);
+        
         Map<String, Integer> workLocations = new HashMap<>();
         workLocations.put("Schans", 0);
         contact.setWorkLocations(workLocations);
+        
+        return contact;
     }
 
    
