@@ -11,28 +11,51 @@ import java.util.HashMap;
 
 /**
  *
- * @author hassanmessaoudi
+ * @author Mohamed Messaoudi
+ * @date 9 februari 2016
  */
 public class Assignment {
     
     private Contact contact;
-    private float rate;
+    private double rate;
     private LocalDateTime startDateTime, endDateTime;
-    private Map<Float, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate;
+    private Map<Double, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate;
     private String shift;
     
-    public Assignment(Contact contact, float rate, LocalDateTime startDateTime, 
+     public Assignment(Contact contact, LocalDateTime startDateTime, 
+                      LocalDateTime endDateTime, String shift, 
+                      Map<Double, Map<LocalDateTime, LocalDateTime>> 
+                              hoursMappedToRate){
+         
+         this(contact, startDateTime, endDateTime, shift);
+         this.hoursMappedToRate = hoursMappedToRate;
+     }
+    
+    public Assignment(Contact contact, LocalDateTime startDateTime, 
                       LocalDateTime endDateTime, String shift){
         
         this.contact = contact;
-        this.rate = rate;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
         this.shift = shift;
+        setDefaultRate(shift);
+        setPeriod(startDateTime, endDateTime);
+        
+    }
     
+    private void setPeriod(LocalDateTime startDateTime, 
+            LocalDateTime endDateTime){
+        
+        if(startDateTime.isBefore(endDateTime)){
+            this.startDateTime = startDateTime;
+            this.endDateTime = endDateTime;
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "The time and/or date of the ending of the shift ("+
+                            endDateTime + ")is before the start of the shift (" +
+                            startDateTime + ").");
+        }
     }
 
-    
     public Contact getContact() {
         return contact;
     }
@@ -41,11 +64,11 @@ public class Assignment {
         this.contact = contact;
     }
 
-    public float getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -65,14 +88,31 @@ public class Assignment {
         this.endDateTime = endDateTime;
     }
 
-    public Map<Float, Map<LocalDateTime, LocalDateTime>> getHoursMappedToRate() {
+    public Map<Double, Map<LocalDateTime, LocalDateTime>> getHoursMappedToRate() {
         return hoursMappedToRate;
     }
 
-    public void setHoursMappedToRate(Map<Float, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate) {
+    /**
+     *
+     * @param hoursMappedToRate
+     */
+    public void setHoursMappedToRate(Map<Double, Map<LocalDateTime, 
+            LocalDateTime>> hoursMappedToRate) {
         this.hoursMappedToRate = hoursMappedToRate;
     }
 
+    public void setHoursMappedToRate(double rate, LocalDateTime startTime, 
+            LocalDateTime endTime){
+        Map<LocalDateTime, LocalDateTime> period;
+        
+        if(hoursMappedToRate == null){
+            hoursMappedToRate = new HashMap<>();
+        }
+        period = new HashMap<>();
+        period.put(startTime, endTime);
+        hoursMappedToRate.put(rate, period);
+    }
+    
     public String getShift() {
         return shift;
     }
@@ -81,6 +121,13 @@ public class Assignment {
         this.shift = shift;
     }
     
+   private void setDefaultRate(String shift){
+       this.rate = getContact().getStandardRates().get(shift);
+   }
+
+    private void getRateDifferentiatedHours() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
-    
+   
 }

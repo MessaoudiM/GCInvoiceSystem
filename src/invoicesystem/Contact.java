@@ -155,7 +155,7 @@ public class Contact {
 
     /**
      *
-     * @return
+     * @return double
      */
     public double getTravelAllowance() {
         return travelAllowance;
