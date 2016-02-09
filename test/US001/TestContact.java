@@ -21,7 +21,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  *
- * @author hassanmessaoudi
+ * @author Mohamed Messaoudi
  */
 public class TestContact {
     
@@ -72,9 +72,6 @@ public class TestContact {
         InvoiceSystem.getCompanies().clear();
     
     }
-    
-   // @Test
-    //public void testExistingContactCreatedCorrectly(){      }
     
     @Test
     public void testCompanyName(){
@@ -136,20 +133,45 @@ public class TestContact {
     }
     
     @Test
-    public void createContact_newContact(){
+    public void newContact_newContact(){
         String companyName = "TestCompany2";
         contact = new Contact(companyName);
         assertEquals(companyName, contact.getCompanyName());
     }
     
     @Test
-    public void createContact_existingContact(){
+    public void newContact_existingContact(){
+        
         String companyName = "Test Inc.";
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(companyName);
         contact = new Contact(companyName);
-        //IllegalArgumentException e = new IllegalArgumentException(companyName);
-        //assertEquals(e, new Contact(companyName));
+    }
+    
+    @Test
+    public void setCompanyName_newName(){
+        String companyName = "TestCompany2";
+        contact.setCompanyName(companyName);
+        assertEquals("TestCompany2", contact.getCompanyName());
+    }
+    
+    @Test
+    public void setCompanyName_sameName(){
+        String companyName = "Test Inc.";
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(companyName + 
+                " is the same as its current name.");
+        contact.setCompanyName(companyName);
+    }
+    
+    @Test
+    public void setCompanyName_existingName(){
+        String companyName = "TestCompany2";
+        Contact contact2 = new Contact(companyName);
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(companyName + 
+                " already exists in list of companies.");
+        contact.setCompanyName(companyName);
     }
 
 }

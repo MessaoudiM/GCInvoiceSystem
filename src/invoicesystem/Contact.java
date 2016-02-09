@@ -32,14 +32,17 @@ public class Contact {
     public Contact(String companyName) {
         //DOUBLY CHECKED IN InvoiceSystem.createContact()
         if(InvoiceSystem.getCompanies().containsKey(companyName)){
-            throw new IllegalArgumentException(companyName);
+            throw new IllegalArgumentException(companyName + 
+                    " already exists in list of companies.");
         } else {
             this.companyName = companyName;
-            InvoiceSystem.getCompanies().put(companyName, this);
-            //add to InvoiceSystem.companies (setCompanies pull push)
+            //InvoiceSystem.getCompanies().put(companyName, this);
+            putContactInCompaniesList();
         }
-        
-        
+    }
+    
+    private void putContactInCompaniesList(){
+        InvoiceSystem.getCompanies().put(getCompanyName(), this);
     }
 
     @Override
@@ -52,8 +55,30 @@ public class Contact {
     }
 
     public void setCompanyName(String companyName) {
-        //CHECK WHETHER THIS ONE EXISTST IN InvoiceSystem.customerCompanies
-        this.companyName = companyName;
+        
+        if(this.getCompanyName().equals(companyName)){
+            throw new IllegalArgumentException(companyName + 
+                    " is the same as its current name.");
+        }
+        // Check to see if the new name exists in InvoiceSystem.companies
+        if(InvoiceSystem.getCompanies().containsKey(companyName)){
+            throw new IllegalArgumentException(companyName + 
+                    " already exists in list of companies.");
+        } 
+        else {
+            String oldCompanyName = this.companyName;
+            this.companyName = companyName;
+            InvoiceSystem.getCompanies().remove(oldCompanyName, this);
+            
+            // Check to see if the old companyName has been removed
+            if (InvoiceSystem.getCompanies().containsKey(oldCompanyName)){
+                throw new IllegalStateException(oldCompanyName + 
+                        " should not exist in InvoiceSystem.companies");
+            } 
+            else {
+                InvoiceSystem.getCompanies().put(companyName, this);
+            }
+        }
     }
 
     public String getInvoiceAddress() {
@@ -144,12 +169,4 @@ public class Contact {
         this.travelAllowance = travelAllowance;
        
     }
-    
-    
-
-   
-            
-            
-           
-    
 }
