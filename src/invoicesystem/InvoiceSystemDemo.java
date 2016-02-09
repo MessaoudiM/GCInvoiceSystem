@@ -5,7 +5,7 @@
  */
 package invoicesystem;
 
-import static invoicesystem.InvoiceSystem.createContact;
+//import static invoicesystem.InvoiceSystem.createContact;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class InvoiceSystemDemo {
 
-    private Contact contact;
+    //private Contact contact;
     private  InvoiceSystem invoiceSystem;
     private static InvoiceSystemDemo instance = null;
 
@@ -29,15 +29,22 @@ public class InvoiceSystemDemo {
      */
     public static InvoiceSystemDemo getInstance(){
         if(instance == null){
-            InvoiceSystem invoiceSystem = InvoiceSystem.getInstance();
+            
             InvoiceSystemDemo.instance = new InvoiceSystemDemo();
         }
         return instance;
     }
     
+    public void startDemo() {
+        invoiceSystem = InvoiceSystem.getInstance();
+        createDemoContact();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+     
     public void createDemoContact(){
     // create demo contact
-        contact = createContact("Willemsen BV");
+        Contact contact;
+        contact = invoiceSystem.createContact("Willemsen BV");
         contact.setContactFirstName("Joop");
         contact.setContactLastName("Willemsen");
         contact.setContactPhoneNum("0612345678");
@@ -60,9 +67,6 @@ public class InvoiceSystemDemo {
         contact.setWorkLocations(workLocations);
     }
 
-    public void startDemo() {
-        createDemoContact();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
     
 }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class InvoiceSystem {
     
     private static Map<String, Contact> customerCompanies;
-    private static Contact contact;
+    //private static Contact contact;
     private static InvoiceSystem instance = null;
 
     
@@ -25,6 +25,7 @@ public class InvoiceSystem {
     //************************************************************************
     //              CONSTRUCTOR
     protected InvoiceSystem(){
+        customerCompanies = new HashMap<>();
     }
     
     public static InvoiceSystem getInstance(){
@@ -39,7 +40,7 @@ public class InvoiceSystem {
         
         //START DEMO
         InvoiceSystemDemo invoiceSystemDemo = InvoiceSystemDemo.getInstance();
-       invoiceSystemDemo.startDemo();
+        invoiceSystemDemo.startDemo();
         
     }
 
@@ -62,12 +63,20 @@ public class InvoiceSystem {
      * @return  Contact
      * 
      */
-    public static Contact createContact(String customerCompanyName){
+    public Contact createContact(String customerCompanyName){
         //Check to see if the customerCompanyName is already in use
+        /*
+        if(getCustomerCompanies().isEmpty()){
+        Contact contact = new Contact(customerCompanyName);
+        getCustomerCompanies().put(customerCompanyName, contact);
+        return contact;
+        */
+        
         if(!getCustomerCompanies().containsKey(customerCompanyName)){
             Contact contact = new Contact(customerCompanyName);
             getCustomerCompanies().put(customerCompanyName, contact);
             return contact;
+        
         } else {
             throw new IllegalArgumentException(customerCompanyName);
         }
