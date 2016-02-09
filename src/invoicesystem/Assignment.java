@@ -22,7 +22,7 @@ public class Assignment {
     private String shift;
     
     public Assignment(Contact contact, float rate, LocalDateTime startDateTime, 
-                      LocalDateTime endTime, String shift){
+                      LocalDateTime endDateTime, String shift){
         
         this.contact = contact;
         this.rate = rate;
