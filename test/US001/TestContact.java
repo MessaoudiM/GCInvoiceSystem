@@ -45,7 +45,7 @@ public class TestContact {
         contact.setLastName("Wayne");
         contact.setPhoneNum("555-12345");
         //contact.setCompanyName(customerCompanyName);
-        contact.setInvoiceAddress("Street 1 /nPC 1234/nCity");
+  //      contact.setInvoiceAddress("Street 1 /nPC 1234/nCity");
         contact.setNotes("Nothing");
         contact.setTravelAllowance(1.20);
         contact.setVat(21);
@@ -59,10 +59,11 @@ public class TestContact {
         rate = 80.00;
         ratesMap.put(shift, rate);
         contact.setStandardRates(ratesMap);
-        
+        /*
         Map<String, Integer> workLocations = new HashMap<>();
         workLocations.put("Schans", 0);
         contact.setWorkLocations(workLocations);
+        */
         //-----------------------------------------------------------------
     }
     
@@ -74,42 +75,43 @@ public class TestContact {
     }
     
     @Test
-    public void testCompanyName(){
+    public void testGetCompanyName(){
         assertEquals("Test Inc.", contact.getCompanyName());
     }
+    
     @Test
-    public void testFirstName(){
+    public void testGetFirstName(){
         assertEquals("John", contact.getFirstName());
     }
     
     @Test
-    public void testLastName() {
+    public void testGetLastName() {
        assertEquals("Wayne", contact.getLastName());
     }
     
     @Test
-    public void testPhoneNum(){
+    public void testGetPhoneNum(){
         assertEquals("555-12345", contact.getPhoneNum());
     }
     
     @Test
-    public void testEmailAddress(){
+    public void testGetEmailAddress(){
         assertEquals("test@testinc.com", contact.getEmailAddress());
     }
     //public void testCompanyName(){}
-    
+    /*
     @Test
     public void testInvoiceAddress(){
-        assertEquals("Street 1 /nPC 1234/nCity", contact.getInvoiceAddress());
+    assertEquals("Street 1 /nPC 1234/nCity", contact.getInvoiceAddress());
     }
-    
+    */ 
     @Test
-    public void testNotes(){
+    public void testGetNotes(){
         assertEquals("Nothing", contact.getNotes());
     }
     
     @Test
-    public void testStandardRates(){
+    public void testGetStandardRates(){
         assertTrue(contact.getStandardRates().containsKey("Dag"));
         assertTrue(contact.getStandardRates().containsKey("Nacht"));
         assertEquals(50.00, contact.getStandardRates().get("Dag"), 0.0);
@@ -117,21 +119,21 @@ public class TestContact {
     }
     
     @Test
-    public void testTravelAllowance(){
+    public void testGetTravelAllowance(){
         assertEquals(1.2, contact.getTravelAllowance(), 0.0);
     }
     
     @Test
-    public void testVat(){
+    public void testGetVat(){
         assertEquals(21, contact.getVat());
     }
-    
+    /*
     @Test
     public void testWorkLocations(){
-        assertTrue(contact.getWorkLocations().containsKey("Schans"));
-        assertEquals((Integer) 0, contact.getWorkLocations().get("Schans"));
+    assertTrue(contact.getWorkLocations().containsKey("Schans"));
+    assertEquals((Integer) 0, contact.getWorkLocations().get("Schans"));
     }
-    
+    */
     @Test
     public void newContact_newContact(){
         String companyName = "TestCompany2";

@@ -21,23 +21,27 @@ public class Assignment {
     private LocalDateTime startDateTime, endDateTime;
     private Map<Double, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate;
     private String shift;
+    private final Location workLocation;
     
-     public Assignment(Contact contact, LocalDateTime startDateTime, 
+    public Assignment(Contact contact, LocalDateTime startDateTime, 
                       LocalDateTime endDateTime, String shift, 
+                      Location workLocation, 
                       Map<Double, Map<LocalDateTime, LocalDateTime>> 
                               hoursMappedToRate){
          
-         this(contact, startDateTime, endDateTime, shift);
+         this(contact, startDateTime, endDateTime, shift, workLocation);
          this.hoursMappedToRate = hoursMappedToRate;
      }
     
     public Assignment(Contact contact, LocalDateTime startDateTime, 
-                      LocalDateTime endDateTime, String shift){
+                      LocalDateTime endDateTime, String shift, 
+                      Location workLocation ){
         
         this.contact = contact;
         this.shift = shift;
         setDefaultRate(shift);
         setPeriod(startDateTime, endDateTime);
+        this.workLocation = workLocation;
         
     }
     

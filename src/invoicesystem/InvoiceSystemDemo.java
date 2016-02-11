@@ -53,7 +53,7 @@ public class InvoiceSystemDemo {
         contact.setLastName("Willemsen");
         contact.setPhoneNum("0612345678");
         contact.setEmailAddress("administratie@willemsenbv.nl");
-        contact.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");
+  //      contact.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");
         contact.setNotes("xxxxxxxxxx");
         contact.setTravelAllowance(1.20);
         contact.setVat(21);
@@ -69,9 +69,10 @@ public class InvoiceSystemDemo {
         ratesMap.put(shift, rate);
         contact.setStandardRates(ratesMap);
         
-        Map<String, Integer> workLocations = new HashMap<>();
+/*      Map<String, Integer> workLocations = new HashMap<>();
         workLocations.put("Schans", 0);
         contact.setWorkLocations(workLocations);
+        */    
         
         return contact;
     }

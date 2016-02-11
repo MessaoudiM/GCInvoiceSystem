@@ -41,7 +41,7 @@ public class TestAssignment {
         contact.setLastName("Wayne");
         contact.setPhoneNum("555-12345");
         //contact.setCompanyName(customerCompanyName);
-        contact.setInvoiceAddress("Street 1 /nPC 1234/nCity");
+  //      contact.setInvoiceAddress("Street 1 /nPC 1234/nCity");
         contact.setNotes("Nothing");
         contact.setTravelAllowance(1.20);
         contact.setVat(21);
@@ -55,17 +55,18 @@ public class TestAssignment {
         rate = 80.00;
         ratesMap.put(shift, rate);
         contact.setStandardRates(ratesMap);
-        
+        /*
         Map<String, Integer> workLocations = new HashMap<>();
         workLocations.put("Schans", 0);
         contact.setWorkLocations(workLocations);
+        */
         //-----------------------------------------------------------------
         LocalDateTime startTime, endTime;
         startTime = LocalDateTime.of(2016, 12, 8, 8, 30);
         endTime = LocalDateTime.of(2016, 12, 8, 17, 0);
         shift = "Dag";
         
-        assignment = new Assignment(contact, startTime, endTime, shift);
+        assignment = new Assignment(contact, startTime, endTime, shift, null);
     }
     
     @After
@@ -74,6 +75,18 @@ public class TestAssignment {
         assignment = null;
         InvoiceSystem.getCompanies().clear();
     }
+    
+    /*
+    @Test
+    public void testSetLastName() {
+        System.out.println("setLastName");
+        String lastName = "";
+        Contact instance = null;
+        instance.setLastName(lastName);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    */
     
     @Test
     public void testGetContact(){
