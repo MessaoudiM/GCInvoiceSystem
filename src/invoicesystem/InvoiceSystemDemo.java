@@ -49,8 +49,7 @@ public class InvoiceSystemDemo {
     // create demo contact
         Contact contact;
         contact = invoiceSystem.createContact("Willemsen BV");
-        contact.setFirstName("Joop");
-        contact.setLastName("Willemsen");
+        contact.setPersonsName("Joop");
         contact.setPhoneNum("0612345678");
         contact.setEmailAddress("administratie@willemsenbv.nl");
   //      contact.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");

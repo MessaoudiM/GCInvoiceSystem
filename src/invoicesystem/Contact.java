@@ -22,8 +22,7 @@ public class Contact {
     
     private String companyName;
     private Location location;
-    private String firstName;
-    private String lastName;
+    private String personsName;
     private String emailAddress;
     private String phoneNum;
     private String notes;
@@ -91,12 +90,8 @@ public class Contact {
         return this;
     }
     
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getPersonsName() {
+        return personsName;
     }
 
     public String getEmailAddress() {
@@ -183,25 +178,15 @@ public class Contact {
     //      SETTERS WITH VALIDATION
     
     
-    public Contact setFirstName(String firstName) {
+    public Contact setPersonsName(String personsName) {
         try {
-            if (isNotEmptyOrNull(firstName) &&
-                    hasNoInvalidCharacters(firstName)) {
-                this.firstName = firstName;
+            if (isNotEmptyOrNull(personsName) &&
+                    hasNoInvalidCharacters(personsName)) {
+                this.personsName = personsName;
             }
             return this;
         } catch (Exception e) {
             throw e;
-        }
-    }
-
-    public Contact setLastName(String lastName) {
-        if(lastName.trim().length() != 0){
-            this.lastName = lastName;
-            return this;
-        }
-        else{
-            throw new IllegalArgumentException("Field: last name, is empty.");
         }
     }
      
@@ -277,15 +262,17 @@ public class Contact {
         return true;
     }
 
-    private boolean hasNoInvalidCharacters(String firstName) {
-        if(firstName.matches("[a-zA-Z\\s]+")){
+    private boolean hasNoInvalidCharacters(String personsName) {
+        if(personsName.matches("[\\w\\s-.',]+")){
+        //if(personsName.matches("^[\\p{L}]+$ .'-+")){
             return true;
         } else {
-            throw new IllegalArgumentException("Invalid characters. Field "
-                    + "may only contain the following characters: a-z, A-Z, "
-                    + "hyphen -");
+            throw new IllegalArgumentException("Valid characters include: "
+                    + "space 0-9 A-Z a-z .,'-");
         }
     }
+    
+    
 }
 
 
@@ -305,8 +292,7 @@ public class Contact {
     
     //Optional parameters
     private Location location;
-    private String firstName;
-    private String lastName;
+    private String personsName;
     private String emailAddress;
     private String phoneNum;
     private String notes;
@@ -320,13 +306,8 @@ public class Contact {
     this.companyName = companyName;
     }
     
-    public Builder firstName(String firstName){
-    this.firstName = firstName;
-    return this;
-    }
-    
-    public Builder lastName(String lastName){
-    this.lastName = lastName;
+    public Builder personsName(String personsName){
+    this.personsName = personsName;
     return this;
     }
     
@@ -376,8 +357,7 @@ public class Contact {
     
     //Optional parameters
     location = builder.location;
-    firstName = builder.firstName;
-    lastName = builder.lastName;
+    personsName = builder.personsName;
     emailAddress = builder.emailAddress;
     phoneNum = builder.phoneNum;
     notes = builder.notes;

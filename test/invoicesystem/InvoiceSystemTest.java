@@ -70,8 +70,8 @@ public class InvoiceSystemTest {
     public void testGetCompanies() {
         System.out.println("getCompanies");
         Map<String, Contact> expResult = null;
-        Map<String, Contact> result = InvoiceSystem.getCompanies();
-        assertEquals(expResult, result);
+        //Map<String, Contact> result = InvoiceSystem.getCompanies();
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -83,7 +83,7 @@ public class InvoiceSystemTest {
     public void testSetCompanies() {
         System.out.println("setCompanies");
         Map<String, Contact> companies = null;
-        InvoiceSystem.setCompanies(companies);
+        //InvoiceSystem.setCompanies(companies);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -109,9 +109,9 @@ public class InvoiceSystemTest {
     @Test
     public void testPutContactInCompanies() {
         System.out.println("putContactInCompanies");
-        Contact contact = null;
+        Contact contact = new Contact("Test Inc.");
         InvoiceSystem instance = new InvoiceSystem();
-        instance.putContactInCompanies(contact);
+        //ontact.putContactInCompanies("tst");
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

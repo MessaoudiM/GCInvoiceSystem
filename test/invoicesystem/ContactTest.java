@@ -23,7 +23,7 @@ import org.junit.rules.ExpectedException;
 public class ContactTest  {
 
     private Contact contact;
-    private String companyName, firstName, lastName, emailAddress, 
+    private String companyName, personsName, emailAddress,
             phoneNum, notes, shift;
     private double travelAllowance, rate;               
     private int vat;
@@ -62,8 +62,7 @@ public class ContactTest  {
         /*
         contact = new Contact("Test Inc.");
         contact.setEmailAddress("test@testinc.com");
-        contact.setFirstName("John");
-        contact.setLastName("Wayne");
+        contact.setPersonsName("John");
         contact.setPhoneNum("555-12345");
         //contact.replaceCompanyName(customerCompanyName);
         //contact.setInvoiceAddress("Street 1 /nPC 1234/nCity");
@@ -74,22 +73,20 @@ public class ContactTest  {
   
                 
         companyName = "Test Inc.";
-        firstName = "John";
-        lastName = "Wayne";
+        personsName = "John Wayne";
         emailAddress = "test@testinc.com";
         phoneNum = "555-12345";
         notes = "Nothing";
         travelAllowance = 1.20;
         vat = 21;
         
-        contact = new Contact("Test Inc.")
-                .setEmailAddress("test@testinc.com")                            
-                .setFirstName("John")
-                .setLastName("Wayne")
-                .setPhoneNum("555-12345")
-                .setNotes("Nothing")
-                .setTravelAllowance(1.20)
-                .setVat(21);
+        contact = new Contact(companyName)
+                .setEmailAddress(emailAddress)                            
+                .setPersonsName(personsName)
+                .setPhoneNum(phoneNum)
+                .setNotes(notes)
+                .setTravelAllowance(travelAllowance)
+                .setVat(vat);
         
         
         ratesMap = new HashMap<>();
@@ -110,8 +107,7 @@ public class ContactTest  {
         }
         contact = null;
         companyName = null;
-        firstName = null;
-        lastName = null;
+        personsName = null;
         emailAddress = null;
         phoneNum = null;
         notes = null;
@@ -128,8 +124,7 @@ public class ContactTest  {
         fixtureSetUpMockContact();
 
         assertEquals(companyName, contact.getCompanyName());
-        assertEquals(firstName, contact.getFirstName());
-        assertEquals(lastName, contact.getLastName());
+        assertEquals(personsName, contact.getPersonsName());
         assertEquals(emailAddress, contact.getEmailAddress()) ;
         assertEquals(phoneNum, contact.getPhoneNum());
         assertEquals(notes, contact.getNotes());
@@ -231,350 +226,48 @@ public class ContactTest  {
         
         fixtureTearDownMockContact();
     }
-
+   
     @Test
-    public void setFirstName_correctNameSingleName(){
+    public void setPersonsName_null(){
         fixtureSetUpMockContact();
-        firstName = "Bob";
-        contact.setFirstName(firstName);
-        assertEquals(firstName, contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_correctNameCompositeNameSeparatedBySpace(){
-        fixtureSetUpMockContact();
-        firstName = "Billy Bob";
-        contact.setFirstName(firstName);
-        assertEquals(firstName, contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_correctNameCompositeNameSeparatedByHyphen(){
-        fixtureSetUpMockContact();
-        firstName = "Billy-Bob";
-        contact.setFirstName(firstName);
-        assertEquals(firstName, contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-
-    @Test
-    public void setFirstName_emptyString(){
-        fixtureSetUpMockContact();
-        firstName = "";
+        personsName = null;
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Field cannot be empty.")
-        contact.setFirstName(firstName);
+        thrown.expectMessage("Field cannot be empty.");
+        contact.setPersonsName(personsName);
         fixtureTearDownMockContact();
     }
     
-    @Test
-    public void setFirstName_null(){
+       @Test
+    public void setPersonsName_invalidCharactersNonNumbersNonLetters(){
         fixtureSetUpMockContact();
-        firstName = null;
+        personsName = "!@#%";
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Field cannot be empty.")
-        contact.setFirstName(firstName);
+        thrown.expectMessage("Valid characters include: "
+                    + "space 0-9 A-Z a-z .,'-");
+        contact.setPersonsName(personsName);
         fixtureTearDownMockContact();
     }
     
+    
     @Test
-    public void setFirstName_invalidCharactersNumbers(){
+    public void setPersonsName_leadingSpace(){
         fixtureSetUpMockContact();
-        firstName = "1234";
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Invalid characters. Field may only "
-                + "contain the following characters: a-z, A-Z, hyphen -");
-        contact.setFirstName(firstName);
+        personsName = " Bob";
+        contact.setPersonsName(personsName);
+        assertEquals("Bob", contact.getCompanyName());
         fixtureTearDownMockContact();
     }
     
-    @Test
-    public void setFirstName_invalidCharactersNonNumbersNonLetters(){
+      @Test
+    public void setPersonsName_trailingSpace(){
         fixtureSetUpMockContact();
-        firstName = "!@#%";
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Invalid characters. Field may only "
-                + "contain the following characters: a-z, A-Z, hyphen -");
-        contact.setFirstName(firstName);
+        personsName = "Billy Bob  ";
+        contact.setPersonsName(personsName);
+        assertEquals("Billy Bob", contact.getPersonsName());
         fixtureTearDownMockContact();
     }
     
-    @Test
-    public void setFirstName_invalidCharactersCombination(){
-        fixtureSetUpMockContact();
-        firstName = "567890+_)(*&}{";
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Invalid characters. Field may only "
-                + "contain the following characters: a-z, A-Z, hyphen -");
-        contact.setFirstName(firstName);
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_allCapsSingleName(){
-        fixtureSetUpMockContact();
-        firstName = "BOB";
-        contact.setFirstName(firstName);
-        assertEquals("Bob", contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_allCapsCompositeNameSeparatedBySpace(){
-        fixtureSetUpMockContact();
-        firstName = "BILLY BOB";
-        contact.setFirstName(firstName);
-        assertEquals("Billy Bob", contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_allCapsCompositeNameSeparatedByHyphen(){
-        fixtureSetUpMockContact();
-        firstName = "BILLY-BOB";
-        contact.setFirstName(firstName);
-        assertEquals("Billy-Bob", contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test
-    public void setFirstName_oneLetterString(){
-        fixtureSetUpMockContact();
-        firstName = "M";
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Field must contain at least 2 characters.");
-        contact.setFirstName(firstName);
-        fixtureTearDownMockContact();
-    }
-    
-    @Test 
-    public void setFirstName_twoLetterString(){
-        fixtureSetUpMockContact();
-        firstName = "Mo";
-        contact.setFirstName(firstName);
-        assertEquals(firstName, contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    @Test 
-    public void setFirstName_largeString(){
-        fixtureSetUpMockContact();
-        firstName = getLargeString();
-        contact.setFirstName(firstName);
-        assertEquals(firstName, contact.getFirstName());
-        fixtureTearDownMockContact();
-    }
-    
-    private String getLargeString(){
-        String returnString = "";
-        for(int i = 0; i < 100; i++){
-            returnString += "Abcdefghijklmnopqrstuvwxyz";
-        }
-        return returnString;
-    }
-    /*
-    @Test
-    public void testToString() {
-    System.out.println("toString");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.toString();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetCompanyName() {
-    System.out.println("getCompanyName");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getCompanyName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetCompanyName() {
-    System.out.println("replaceCompanyName");
-    String companyName = "";
-    Contact instance = null;
-    instance.replaceCompanyName(companyName);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetFirstName() {
-    System.out.println("getFirstName");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getFirstName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetFirstName() {
-    System.out.println("setFirstName");
-    String firstName = "";
-    Contact instance = null;
-    instance.setFirstName(firstName);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetLastName() {
-    System.out.println("getLastName");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getLastName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetLastName() {
-    System.out.println("setLastName");
-    String lastName = "";
-    Contact instance = null;
-    instance.setLastName(lastName);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetEmailAddress() {
-    System.out.println("getEmailAddress");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getEmailAddress();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetEmailAddress() {
-    System.out.println("setEmailAddress");
-    String emailAddress = "";
-    Contact instance = null;
-    instance.setEmailAddress(emailAddress);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetPhoneNum() {
-    System.out.println("getPhoneNum");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getPhoneNum();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetPhoneNum() {
-    System.out.println("setPhoneNum");
-    String phoneNum = "";
-    Contact instance = null;
-    instance.setPhoneNum(phoneNum);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetNotes() {
-    System.out.println("getNotes");
-    Contact instance = null;
-    String expResult = "";
-    String result = instance.getNotes();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetNotes() {
-    System.out.println("setNotes");
-    String notes = "";
-    Contact instance = null;
-    instance.setNotes(notes);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetStandardRates() {
-    System.out.println("getStandardRates");
-    Contact instance = null;
-    Map<String, Double> expResult = null;
-    Map<String, Double> result = instance.getStandardRates();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetStandardRates() {
-    System.out.println("setStandardRates");
-    Map<String, Double> standardRates = null;
-    Contact instance = null;
-    instance.setStandardRates(standardRates);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetVat() {
-    System.out.println("getVat");
-    Contact instance = null;
-    int expResult = 0;
-    int result = instance.getVat();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetVat() {
-    System.out.println("setVat");
-    int vat = 0;
-    Contact instance = null;
-    instance.setVat(vat);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testGetTravelAllowance() {
-    System.out.println("getTravelAllowance");
-    Contact instance = null;
-    double expResult = 0.0;
-    double result = instance.getTravelAllowance();
-    assertEquals(expResult, result, 0.0);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    
-    @Test
-    public void testSetTravelAllowance() {
-    System.out.println("setTravelAllowance");
-    double travelAllowance = 0.0;
-    Contact instance = null;
-    instance.setTravelAllowance(travelAllowance);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-    }
-    */
+     
     
   
 }
