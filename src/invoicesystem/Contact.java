@@ -5,6 +5,7 @@
  */
 package invoicesystem;
 
+import java.util.HashMap;
 import java.util.Map;
 //import java.util.HashMap;
 //import java.util.List;
@@ -15,41 +16,67 @@ import java.util.Map;
  * @author hassanmessaoudi
  */
 public class Contact {
+    private static Map<String, Contact> companies = new HashMap<>();
+
+    
     
     private String companyName;
-    private final Location location;
+    private Location location;
     private String firstName;
     private String lastName;
     private String emailAddress;
     private String phoneNum;
     private String notes;
-    
-
-    
+   
 //move into a separate object
     private Map<String, Double> standardRates; // key= shiftName, val= shiftRate
     private int vat;
     private double travelAllowance; //Allowance per km
+    private final InvoiceSystem invoiceSystem = InvoiceSystem.getInstance();
 
+    
+    //*************************************************************************
+    //      CONSTRUCTORS
+    
     public Contact(String companyName) {
-        //DOUBLY CHECKED IN InvoiceSystem.createContact()
-        if(InvoiceSystem.getCompanies().containsKey(companyName)){
-            throw new IllegalArgumentException(companyName + 
-                    " already exists in list of companies.");
-        } else {
-            this.companyName = companyName;
-            //InvoiceSystem.getCompanies().put(companyName, this);
-            putContactInCompaniesList();
+        /*  if(companyName == null) {
+        throw new NullPointerException(
+        "Name = null in Contact constructor");
         }
+        
+        if(companyName.trim().length() == 0){
+        throw new IllegalArgumentException("Company name cannot be empty");
+        }
+        */
+    
+        
+        //if(getCompanies().containsKey(companyName)){
+        //    throw new IllegalArgumentException(companyName +" already exists.");
+        //}
+        //else {
+        
+        /*if(isNotInCompanies(companyName)){
+        this.companyName = companyName;
         location = new Location();
+        putContactInCompanies(companyName);
+        }             */
+        
+        try{ 
+            if(isNotEmptyOrNull(companyName)){
+                this.companyName = companyName;
+                putContactInCompanies(companyName);
+                location = new Location();
+            }
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
     
-    private void putContactInCompaniesList(){
-        //change so that invoicesystem itself performs this function
-        // with validation done in invoicesystem
-        InvoiceSystem.getCompanies().put(getCompanyName(), this);
-    }
-
+  
+    //*************************************************************************
+    //      SIMPLE GETTERS AND SETTERS
+   
     @Override
     public String toString() {
         return getCompanyName();
@@ -58,36 +85,60 @@ public class Contact {
     public String getCompanyName() {
         return companyName;
     }
-
-    public void setCompanyName(String companyName) {
-        
-        //SPLIT UP IN MULTIPLE METHODS
-        
-        if(this.getCompanyName().equals(companyName)){
-            throw new IllegalArgumentException(companyName + 
-                    " is the same as its current name.");
-        }
-        // Check to see if the new name exists in InvoiceSystem.companies
-        if(InvoiceSystem.getCompanies().containsKey(companyName)){
-            throw new IllegalArgumentException(companyName + 
-                    " already exists in list of companies.");
-        } 
-        else {
-            String oldCompanyName = this.companyName;
-            this.companyName = companyName;
-            InvoiceSystem.getCompanies().remove(oldCompanyName, this);
-            
-            // Check to see if the old companyName has been removed
-            if (InvoiceSystem.getCompanies().containsKey(oldCompanyName)){
-                throw new IllegalStateException(oldCompanyName + 
-                        " should not exist in InvoiceSystem.companies");
-            } 
-            else {
-                InvoiceSystem.getCompanies().put(companyName, this);
-            }
-        }
+    
+    private Contact setCompanyName(String companyName){
+        this.companyName = companyName;
+        return this;
     }
     
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+  
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public Contact setPhoneNum(String phoneNum) {
+            this.phoneNum = phoneNum;
+            return this;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public Contact setNotes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    public Map<String, Double> getStandardRates() {
+        return standardRates;
+    }
+
+    public Contact setStandardRates(Map<String, Double> standardRates) {
+        this.standardRates = standardRates;
+        return this;
+    }
+
+    public int getVat() {
+        return vat;
+    }
+
+    public Contact setVat(int vat) {
+        this.vat = vat;
+        return this;
+    }
+
     /*
     public String getInvoiceAddress() {
         return invoiceAddress();
@@ -97,86 +148,7 @@ public class Contact {
         this.invoiceAddress = invoiceAddress;
     }*/
     
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        if(firstName.trim().length() != 0){
-            this.firstName = firstName;
-        }
-        else {
-            throw new IllegalArgumentException("Field: first name, is empty.");
-        }
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        if(lastName.trim().length() != 0){
-            this.lastName = lastName;
-        }
-        else{
-            throw new IllegalArgumentException("Field: last name, is empty.");
-        }
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        if(emailAddress.trim().length() != 0){
-            if(emailAddress.contains("@")&&emailAddress.contains(".")){
-                this.emailAddress = emailAddress;
-            } 
-            else {
-                throw new IllegalArgumentException("Invalid format of "
-                        + "emailaddress");
-            }
-        } 
-        else{
-            throw new IllegalArgumentException("Field: email address, "
-                    + "is empty");
-        }
-    }
-       
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-            this.phoneNum = phoneNum;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-   
-
-    public Map<String, Double> getStandardRates() {
-        return standardRates;
-    }
-
-    public void setStandardRates(Map<String, Double> standardRates) {
-        this.standardRates = standardRates;
-    }
-
-    public int getVat() {
-        return vat;
-    }
-
-    public void setVat(int vat) {
-        this.vat = vat;
-    }
-
+    
     /**
      *
      * @return double
@@ -189,8 +161,231 @@ public class Contact {
      *
      * @param travelAllowance
      */
-    public void setTravelAllowance(double travelAllowance) {
-        this.travelAllowance = travelAllowance;
-       
+    public Contact setTravelAllowance(double travelAllowance) {
+        this.travelAllowance = travelAllowance;       
+        return this;
+    }
+    
+    public final Map<String, Contact> getCompanies() {
+        return companies;
+    }
+
+    /**
+     *
+     * @param companies
+     */
+    public Contact setCompanies(Map<String, Contact> companies) {
+        Contact.companies = companies;
+        return this;
+    }
+    
+    //*************************************************************************
+    //      SETTERS WITH VALIDATION
+    
+    
+    public Contact setFirstName(String firstName) {
+        try {
+            if (isNotEmptyOrNull(firstName) &&
+                    hasNoInvalidCharacters(firstName)) {
+                this.firstName = firstName;
+            }
+            return this;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public Contact setLastName(String lastName) {
+        if(lastName.trim().length() != 0){
+            this.lastName = lastName;
+            return this;
+        }
+        else{
+            throw new IllegalArgumentException("Field: last name, is empty.");
+        }
+    }
+     
+    public Contact setEmailAddress(String emailAddress) {
+        if(emailAddress.trim().length() != 0){
+            if(emailAddress.contains("@")&&emailAddress.contains(".")){
+                this.emailAddress = emailAddress;
+                return this;
+            } 
+            else {
+                throw new IllegalArgumentException("Invalid format of "
+                        + "emailaddress");
+            }
+        } 
+        else{
+            throw new IllegalArgumentException("Field: email address, "
+                    + "is empty");
+        }
+    }
+    
+    public Contact replaceCompanyName(String companyName) {
+        try {
+            String oldCompanyName = getCompanyName();
+            if( isNotEmptyOrNull(companyName) &&
+                isNotSame(companyName, oldCompanyName) &&
+                isNotInCompanies(companyName)) {
+                    setCompanyName(companyName);
+                    getCompanies().remove(oldCompanyName, this);
+                    putContactInCompanies(companyName);
+            }
+            return this;
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }
+
+    private Contact putContactInCompanies(String companyName){
+        try{
+            if(isNotInCompanies(companyName)){
+                getCompanies().put(companyName, this);
+            }
+            return this;
+        }
+        catch(IllegalArgumentException e){
+            throw e;
+        }
+    }
+    
+    //*************************************************************************
+    //      RE-USABLE VALIDATORS
+    
+    private boolean isNotInCompanies(String companyName){
+        if(getCompanies().containsKey(companyName)){
+            throw new IllegalArgumentException(companyName
+                    + " already exists.");
+        }
+        return true;
+    }
+    
+    private boolean isNotEmptyOrNull(String name){
+        if(name == null || name.trim().length() == 0){
+            throw new IllegalArgumentException("Field cannot be empty.");
+        }
+        return true;
+    }
+    
+    private boolean isNotSame(String newString, String oldString){
+        if(oldString.equals(newString)){
+            throw new IllegalArgumentException("Field : " + newString + 
+                    "cannot be the same as its current value.");
+        }
+        return true;
+    }
+
+    private boolean hasNoInvalidCharacters(String firstName) {
+        if(firstName.matches("[a-zA-Z\\s]+")){
+            return true;
+        } else {
+            throw new IllegalArgumentException("Invalid characters. Field "
+                    + "may only contain the following characters: a-z, A-Z, "
+                    + "hyphen -");
+        }
     }
 }
+
+
+
+    //  END  END  END  END  END  END  END  END  END  END  END
+
+  
+    //*************************************************************************
+    //      BUILDER
+    
+    
+    /*
+    public static class Builder{
+    
+    //Required parameters
+    private String companyName;
+    
+    //Optional parameters
+    private Location location;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private String phoneNum;
+    private String notes;
+    
+    //move into a separate object
+    private Map<String, Double> standardRates; // key= shiftName, val= shiftRate
+    private int vat;
+    private double travelAllowance; //Allowance per km
+    
+    public Builder(String companyName){
+    this.companyName = companyName;
+    }
+    
+    public Builder firstName(String firstName){
+    this.firstName = firstName;
+    return this;
+    }
+    
+    public Builder lastName(String lastName){
+    this.lastName = lastName;
+    return this;
+    }
+    
+    public Builder emailAddress(String emailAddress){
+    this.emailAddress = emailAddress;
+    return this;
+    }
+    
+    public Builder phoneNum(String phoneNum){
+    this.phoneNum = phoneNum;
+    return this;
+    }
+    
+    public Builder notes(String notes){
+    this.notes = notes;
+    return this;
+    }
+    
+    public Builder vat(int vat){
+    this.vat = vat;
+    return this;
+    }
+    
+    public Builder travelAllowance(double travelAllowance){
+    this.travelAllowance = travelAllowance;
+    return this;
+    }
+    
+    public Builder locations (Location location){
+    this.location = location;
+    return this;
+    }
+    
+    public Builder standardRates(Map<String, Double> standardRates){
+    this.standardRates = standardRates;
+    return this;
+    }
+    
+    public Contact build(){
+    return new Contact(this);
+    }
+    }
+    
+    private Contact(Builder builder){
+    // Required parameters
+    companyName = builder.companyName;
+    
+    //Optional parameters
+    location = builder.location;
+    firstName = builder.firstName;
+    lastName = builder.lastName;
+    emailAddress = builder.emailAddress;
+    phoneNum = builder.phoneNum;
+    notes = builder.notes;
+    
+    //move into a separate object
+    standardRates = builder.standardRates; // key= shiftName, val= shiftRate
+    vat = builder.vat;
+    travelAllowance = builder.travelAllowance; //Allow
+    }
+    */
+    

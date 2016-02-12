@@ -6,8 +6,8 @@
 package invoicesystem;
 
 //import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+//import java.util.Map;
+//import java.util.HashMap;
 //import java.math.BigDecimal;
 
 /**
@@ -15,17 +15,13 @@ import java.util.HashMap;
  * @author hassanmessaoudi
  */
 public class InvoiceSystem {
-    
-    private static Map<String, Contact> companies = new HashMap<>();
-    //private static Contact contact;
-    private static InvoiceSystem instance = null;
 
-    
+    private static InvoiceSystem instance = null;
     
     //************************************************************************
     //              CONSTRUCTOR
     protected InvoiceSystem(){
-        //companies = new HashMap<>();
+        
     }
     
     public static InvoiceSystem getInstance(){
@@ -44,17 +40,7 @@ public class InvoiceSystem {
         
     }
 
-    public static Map<String, Contact> getCompanies() {
-        return companies;
-    }
-
-    /**
-     *
-     * @param companies
-     */
-    public static void setCompanies(Map<String, Contact> companies) {
-        InvoiceSystem.companies = companies;
-    }
+ 
 
     /**
      * 
@@ -63,22 +49,20 @@ public class InvoiceSystem {
      * 
      */
     public Contact createContact(String companyName){
-        //Check to see if the companyName is already in use
-        /*
-        if(getCustomerCompanies().isEmpty()){
-        Contact contact = new Contact(customerCompanyName);
-        getCustomerCompanies().put(customerCompanyName, contact);
-        return contact;
-        */
-        
-        if(!getCompanies().containsKey(companyName)){
-            Contact contact = new Contact(companyName);
-            getCompanies().put(companyName, contact);
-            return contact;
-        
-        } else {
-            throw new IllegalArgumentException(companyName);
+        try{
+            return new Contact(companyName);
         }
+        catch(IllegalArgumentException e){
+            // TRY AGAIN WITH ANOTHER INPUT
+            System.out.println(e);
+            return null;
+        }
+        
     }
+    
+    /*public Assignment createAssignment(){
+    return new Assignment();
+    }*/
+    
     
 }
