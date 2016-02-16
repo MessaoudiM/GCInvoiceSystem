@@ -16,56 +16,49 @@ import java.util.HashMap;
  */
 public class Assignment {
     
-    private Contact contact;
+    private Client client;
     private double rate;
     private LocalDateTime startDateTime, endDateTime;
     private Map<Double, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate;
     private String shift;
     private final Location workLocation;
     
-    public Assignment(Contact contact, LocalDateTime startDateTime, 
+     
+    //*************************************************************************
+    //     constructors
+   
+       public Assignment(Client client, LocalDateTime startDateTime, 
+                      LocalDateTime endDateTime, String shift, 
+                      Location workLocation ){
+        
+        this.client = client;
+        this.shift = shift;
+        setDefaultRate(shift);
+        setPeriod(startDateTime, endDateTime);
+        this.workLocation = workLocation; 
+    }
+       
+       public Assignment(Client client, LocalDateTime startDateTime, 
                       LocalDateTime endDateTime, String shift, 
                       Location workLocation, 
                       Map<Double, Map<LocalDateTime, LocalDateTime>> 
                               hoursMappedToRate){
          
-         this(contact, startDateTime, endDateTime, shift, workLocation);
+         this(client, startDateTime, endDateTime, shift, workLocation);
          this.hoursMappedToRate = hoursMappedToRate;
      }
     
-    public Assignment(Contact contact, LocalDateTime startDateTime, 
-                      LocalDateTime endDateTime, String shift, 
-                      Location workLocation ){
-        
-        this.contact = contact;
-        this.shift = shift;
-        setDefaultRate(shift);
-        setPeriod(startDateTime, endDateTime);
-        this.workLocation = workLocation;
-        
-    }
+    //*************************************************************************
+    //      SIMPLE GETTERS AND SETTERS
+   
     
-    private void setPeriod(LocalDateTime startDateTime, 
-            LocalDateTime endDateTime){
-        
-        if(startDateTime.isBefore(endDateTime)){
-            this.startDateTime = startDateTime;
-            this.endDateTime = endDateTime;
-        }
-        else {
-            throw new IllegalArgumentException(
-                    "The time and/or date of the ending of the shift ("+
-                            endDateTime + ")is before the start of the shift (" +
-                            startDateTime + ").");
-        }
+
+    public Client getClient() {
+        return client;
     }
 
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public double getRate() {
@@ -105,7 +98,42 @@ public class Assignment {
         this.hoursMappedToRate = hoursMappedToRate;
     }
 
-    public void setHoursMappedToRate(double rate, LocalDateTime startTime, 
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
+    
+   private void setDefaultRate(String shift){
+       this.rate = getClient().getStandardRates().get(shift);
+   }
+
+    private void getRateDifferentiatedHours() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+     
+    //*************************************************************************
+    //      SETTERS WITH VALIDATION
+    
+     private void setPeriod(LocalDateTime startDateTime, 
+            LocalDateTime endDateTime){
+        
+        if(startDateTime.isBefore(endDateTime)){
+            this.startDateTime = startDateTime;
+            this.endDateTime = endDateTime;
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "The time and/or date of the ending of the shift ("+
+                            endDateTime + ")is before the start of the shift (" +
+                            startDateTime + ").");
+        }
+    }
+     
+     public void setHoursMappedToRate(double rate, LocalDateTime startTime, 
             LocalDateTime endTime){
         Map<LocalDateTime, LocalDateTime> period;
         
@@ -117,21 +145,10 @@ public class Assignment {
         hoursMappedToRate.put(rate, period);
     }
     
-    public String getShift() {
-        return shift;
-    }
-
-    public void setShift(String shift) {
-        this.shift = shift;
-    }
-    
-   private void setDefaultRate(String shift){
-       this.rate = getContact().getStandardRates().get(shift);
-   }
-
-    private void getRateDifferentiatedHours() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    //*************************************************************************
+    //      RE-USABLE VALIDATORS
+   
+   
    
    
 }

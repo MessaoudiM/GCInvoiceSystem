@@ -31,7 +31,11 @@ public class Location {
     
     }
     
-     public Map<String, List<String>> getClientLocations() {
+    public List<String> getClientLocation(String location){
+        return getClientLocations().get(location);
+    }
+    
+    public Map<String, List<String>> getClientLocations() {
         return clientLocations;
     }
 

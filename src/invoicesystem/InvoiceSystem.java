@@ -45,12 +45,12 @@ public class InvoiceSystem {
     /**
      * 
      * @param companyName 
-     * @return  Contact
+     * @return  Client
      * 
      */
-    public Contact createContact(String companyName){
+    public Client createClient(String companyName){
         try{
-            return new Contact(companyName);
+            return new Client(companyName);
         }
         catch(IllegalArgumentException e){
             // TRY AGAIN WITH ANOTHER INPUT

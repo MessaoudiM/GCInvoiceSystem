@@ -69,8 +69,8 @@ public class InvoiceSystemTest {
     @Test
     public void testGetCompanies() {
         System.out.println("getCompanies");
-        Map<String, Contact> expResult = null;
-        //Map<String, Contact> result = InvoiceSystem.getCompanies();
+        Map<String, Client> expResult = null;
+        //Map<String, Client> result = InvoiceSystem.getCompanies();
         //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -82,36 +82,36 @@ public class InvoiceSystemTest {
     @Test
     public void testSetCompanies() {
         System.out.println("setCompanies");
-        Map<String, Contact> companies = null;
+        Map<String, Client> companies = null;
         //InvoiceSystem.setCompanies(companies);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of createContact method, of class InvoiceSystem.
+     * Test of createClient method, of class InvoiceSystem.
      */
     @Test
-    public void testCreateContact() {
-        System.out.println("createContact");
+    public void testCreateClient() {
+        System.out.println("createClient");
         String companyName = "";
         InvoiceSystem instance = new InvoiceSystem();
-        Contact expResult = null;
-        Contact result = instance.createContact(companyName);
+        Client expResult = null;
+        Client result = instance.createClient(companyName);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of putContactInCompanies method, of class InvoiceSystem.
+     * Test of putClientInCompanies method, of class InvoiceSystem.
      */
     @Test
-    public void testPutContactInCompanies() {
-        System.out.println("putContactInCompanies");
-        Contact contact = new Contact("Test Inc.");
+    public void testPutClientInCompanies() {
+        System.out.println("putClientInCompanies");
+        Client client = new Client("Test Inc.");
         InvoiceSystem instance = new InvoiceSystem();
-        //ontact.putContactInCompanies("tst");
+        //client.putClientInCompanies("tst");
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

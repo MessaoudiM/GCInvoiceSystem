@@ -6,6 +6,9 @@
 package invoicesystem;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,6 +23,9 @@ import static org.junit.Assert.*;
  */
 public class AssignmentTest {
     
+    private Client client;
+    private Assignment assignment;
+    
     public AssignmentTest() {
     }
     
@@ -33,35 +39,87 @@ public class AssignmentTest {
     
     @Before
     public void setUp() {
+        
+        // create mock client -----------------------------------------------
+        
+        String companyName, personsName, emailAddress,
+               phoneNum, notes, shift;
+        double travelAllowance, rate;               
+        int vat;
+        Map<String, Double> ratesMap;     
+    
+        companyName = "Test Inc.";
+        personsName = "John Wayne";
+        emailAddress = "test@testinc.com";
+        phoneNum = "555-12345";
+        notes = "Nothing";
+        travelAllowance = 1.20;
+        vat = 21;
+        
+        client = new Client(companyName)
+                .setEmailAddress(emailAddress)                            
+                .setPersonsName(personsName)
+                .setPhoneNum(phoneNum)
+                .setNotes(notes)
+                .setTravelAllowance(travelAllowance)
+                .setVat(vat);
+        
+        
+        ratesMap = new HashMap<>();
+        shift = "Dag";
+        rate = 50.00;
+        ratesMap.put(shift, rate);
+        shift = "Nacht";
+        rate = 80.00;
+        ratesMap.put(shift, rate);
+        client.setStandardRates(ratesMap);
+        
+        //  -----------------------------------------------
     }
     
     @After
     public void tearDown() {
+        client = null;
+        assignment = null;
     }
 
+    //*******************************************************************
+    //      TEST constructors
+    
+    @Test
+    public void testNewAssignment_correctParams(){
+        LocalDateTime startDateTime = LocalDateTime.of(2016, 12, 5, 8, 30);
+        LocalDateTime endDateTime = LocalDateTime.of(2016, 12, 5, 18, 00);
+        String shift = "Dag";
+        Location workLocation = new Location();
+        //List<String> workLocation = client.getLocation("default");
+        assignment = new Assignment(client, startDateTime, endDateTime, 
+                shift, workLocation);
+    }
+    
     /**
-     * Test of getContact method, of class Assignment.
+     * Test of getClient method, of class Assignment.
      */
     @Test
-    public void testGetContact() {
-        System.out.println("getContact");
+    public void testGetClient() {
+        System.out.println("getClient");
         Assignment instance = null;
-        Contact expResult = null;
-        Contact result = instance.getContact();
+        Client expResult = null;
+        Client result = instance.getClient();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setContact method, of class Assignment.
+     * Test of setClient method, of class Assignment.
      */
     @Test
-    public void testSetContact() {
-        System.out.println("setContact");
-        Contact contact = null;
+    public void testSetClient() {
+        System.out.println("setClient");
+        Client client = null;
         Assignment instance = null;
-        instance.setContact(contact);
+        instance.setClient(client);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

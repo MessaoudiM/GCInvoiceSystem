@@ -5,7 +5,7 @@
  */
 package invoicesystem;
 
-//import static invoicesystem.InvoiceSystem.createContact;
+//import static invoicesystem.InvoiceSystem.createClient;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class InvoiceSystemDemo {
 
-    //private Contact contact;
+    //private Client client;
     private  InvoiceSystem invoiceSystem;
     private static InvoiceSystemDemo instance = null;
 
@@ -37,25 +37,25 @@ public class InvoiceSystemDemo {
     
     public void startDemo() {
         invoiceSystem = InvoiceSystem.getInstance();
-        createDemoContact();
+        createDemoClient();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**
      * 
-     * @return Contact
+     * @return Client
      */
-    public Contact createDemoContact(){
-    // create demo contact
-        Contact contact;
-        contact = invoiceSystem.createContact("Willemsen BV");
-        contact.setPersonsName("Joop");
-        contact.setPhoneNum("0612345678");
-        contact.setEmailAddress("administratie@willemsenbv.nl");
-  //      contact.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");
-        contact.setNotes("xxxxxxxxxx");
-        contact.setTravelAllowance(1.20);
-        contact.setVat(21);
+    public Client createDemoClient(){
+    // create demo client
+        Client client;
+        client = invoiceSystem.createClient("Willemsen BV");
+        client.setPersonsName("Joop");
+        client.setPhoneNum("0612345678");
+        client.setEmailAddress("administratie@willemsenbv.nl");
+  //      client.setInvoiceAddress("Schans 1 \n3025 BB\nRotterdam");
+        client.setNotes("xxxxxxxxxx");
+        client.setTravelAllowance(1.20);
+        client.setVat(21);
         
         
         Map<String, Double> ratesMap;
@@ -66,14 +66,14 @@ public class InvoiceSystemDemo {
         shift = "Nacht";
         rate = 80.00;
         ratesMap.put(shift, rate);
-        contact.setStandardRates(ratesMap);
+        client.setStandardRates(ratesMap);
         
 /*      Map<String, Integer> workLocations = new HashMap<>();
         workLocations.put("Schans", 0);
-        contact.setWorkLocations(workLocations);
+        client.setWorkLocations(workLocations);
         */    
         
-        return contact;
+        return client;
     }
 
    

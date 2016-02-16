@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/test/US001/TestAssignment.java</file>
+            <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/src/invoicesystem/Location.java</file>
+            <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/test/invoicesystem/ContactTest.java</file>
+            <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/test/invoicesystem/AssignmentTest.java</file>
             <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/src/invoicesystem/InvoiceSystemDemo.java</file>
             <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/src/invoicesystem/Contact.java</file>
             <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/src/invoicesystem/Assignment.java</file>
-            <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/test/US001/TestContact.java</file>
             <file>file:/Users/hassanmessaoudi/NetBeansProjects/InvoiceSystemNBeans/src/invoicesystem/InvoiceSystem.java</file>
         </group>
     </open-files>
