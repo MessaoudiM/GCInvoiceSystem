@@ -130,7 +130,8 @@ private Client client;
         assertEquals(notes, client.getNotes());
         assertEquals(travelAllowance, client.getTravelAllowance(), 0.0);
         assertEquals(vat, client.getVat());
-        assertEquals(ratesMap, client.getStandardRates());
+        assertEquals(80.00, client.getDefaultRate("Nacht"), 0.0);
+       // assertEquals(ratesMap, client.getStandardRates());
        
         fixtureTearDownMockClient();
     }

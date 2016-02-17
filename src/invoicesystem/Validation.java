@@ -11,8 +11,8 @@ package invoicesystem;
  */
 public class Validation {
      
-    public final static boolean isNotNull(String input){
-        if(input == null){
+    public final static boolean isNotNull(Object obj){
+        if(obj == null){
             throw new IllegalArgumentException("Field cannot be null.");
         }
         return true;

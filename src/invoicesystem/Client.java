@@ -83,6 +83,8 @@ public class Client {
         workingHours.put("start", startTime);
         workingHours.put("end", endTime);
         standardWorkingHours.put("Dag", workingHours);
+        
+        workingHours = new HashMap<>();
         startTime = LocalTime.of(23, 00);
         endTime = LocalTime.of(8, 00);
         workingHours.put("start", startTime);
@@ -135,7 +137,15 @@ public class Client {
         return this;
     }
     public double getDefaultRate (String shift){
-        return getStandardRates().get(shift);
+        if(getStandardRates().get(shift) != null){
+            return getStandardRates().get(shift);
+        }
+        else{
+            throw new IllegalArgumentException(shift + "  is currently "
+                    + "not a valid shift to choose a default rate from. "
+                    + "Please create it or choose from one "
+                    + "of the following shifts: XXXX");
+        }    
     }
     
     private Map<String, Double> getStandardRates() {
@@ -148,22 +158,50 @@ public class Client {
     }
 
     public LocalTime getDefaultStartTime(String shift){
-        return getStandardWorkingHours(shift).get("start");
+        if(getStandardWorkingHours(shift).get("start") != null){
+            return getStandardWorkingHours(shift).get("start");
+        } 
+        else {
+            throw new IllegalArgumentException(shift + " does not contain "
+                    + "start time.");
+        }
     }
     
     public LocalTime getDefaultEndTime(String shift){
-        return getStandardWorkingHours(shift).get("end");
+        if(getStandardWorkingHours(shift).get("end") != null){
+            return getStandardWorkingHours(shift).get("end");
+        } 
+        else{
+            throw new IllegalArgumentException(shift + " does not contain "
+                    + "end time.");
+        }
     }
     
     public int getDefaultRestBreak(String shift){
-        return getStandardRestBreaks().get(shift);
+        if(getStandardRestBreaks().get(shift) != null){
+            return getStandardRestBreaks().get(shift);
+        }
+        else {
+            throw new IllegalArgumentException(shift + "  is currently "
+                    + "not a valid shift to choose a default rest break from. "
+                    + "Please create it or choose from one "
+                    + "of the following shifts: XXXX");
+        }
     }
     private Map<String, Integer> getStandardRestBreaks(){
         return standardRestBreaks;
     }
     
     private Map<String, LocalTime> getStandardWorkingHours(String shift){
-        return standardWorkingHours.get(shift);
+        if(standardWorkingHours.get(shift) != null){
+            return standardWorkingHours.get(shift);
+        }
+        else {
+            throw new IllegalArgumentException(shift + " is currently "
+                    + "not a valid shift to choose default working hours from. "
+                    + "Please create it or choose from one "
+                    + "of the following shifts: XXXX"); 
+        }
     }
     
     public int getVat() {
