@@ -5,6 +5,8 @@
  */
 package invoicesystem;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
@@ -18,33 +20,51 @@ public class Assignment {
     
     private Client client;
     private double rate;
+    private LocalDate assignmentDate;
+    private LocalTime startTime, endTime;
     private LocalDateTime startDateTime, endDateTime;
-    private Map<Double, Map<LocalDateTime, LocalDateTime>> hoursMappedToRate;
+    private Map<Double, Map<LocalTime, LocalTime>> hoursMappedToRate;
     private String shift;
-    private final Location workLocation;
+    private Location location;
     
      
     //*************************************************************************
     //     constructors
    
-       public Assignment(Client client, LocalDateTime startDateTime, 
-                      LocalDateTime endDateTime, String shift, 
-                      Location workLocation ){
-        
-        this.client = client;
-        this.shift = shift;
-        setDefaultRate(shift);
-        setPeriod(startDateTime, endDateTime);
-        this.workLocation = workLocation; 
+    public Assignment(Client client, LocalDate assignmentDate, LocalTime startTime, 
+                      LocalTime endTime, String shift, double rate,
+                      String workLocation, String companyName){
+        try{
+            setClient(client, companyName);
+            this.shift = shift;
+            //setDefaultRate(shift);
+            setRate(shift, rate);
+            setLocation(workLocation);
+            setPeriod(assignmentDate, startTime, endTime);
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
        
-       public Assignment(Client client, LocalDateTime startDateTime, 
-                      LocalDateTime endDateTime, String shift, 
-                      Location workLocation, 
-                      Map<Double, Map<LocalDateTime, LocalDateTime>> 
-                              hoursMappedToRate){
+    
+        /**
+         * 
+         * @param client
+         * @param startTime
+         * @param endTime
+         * @param shift
+         * @param workLocation
+         * @param hoursMappedToRate 
+         */
+    public Assignment(Client client, LocalDate assignmentDate, LocalTime startTime, 
+                      LocalTime endTime, String shift, double rate, 
+                      String workLocation, 
+                      Map<Double, Map<LocalTime, LocalTime>> 
+                              hoursMappedToRate, String companyName){
          
-         this(client, startDateTime, endDateTime, shift, workLocation);
+         this(client, assignmentDate, startTime, endTime, shift, rate, 
+                 workLocation, companyName);
          this.hoursMappedToRate = hoursMappedToRate;
      }
     
@@ -57,35 +77,43 @@ public class Assignment {
         return client;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    
+    
+    public void createClient(String companyName){
+        this.client = new Client(companyName);
     }
 
     public double getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void setRate(String shift, double rate) {
+        if(rate == 0.0) {
+            this.rate = client.getDefaultRate(shift);
+        } else {
+            this.rate = rate;
+        }
+    }
+    
+   
+
+    public LocalTime getStartDateTime() {
+        return startTime;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
+    public void setStartDateTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public LocalTime getEndDateTime() {
+        return endTime;
     }
 
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
+    public void setEndDateTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
-    public Map<Double, Map<LocalDateTime, LocalDateTime>> getHoursMappedToRate() {
+    public Map<Double, Map<LocalTime, LocalTime>> getHoursMappedToRate() {
         return hoursMappedToRate;
     }
 
@@ -93,8 +121,8 @@ public class Assignment {
      *
      * @param hoursMappedToRate
      */
-    public void setHoursMappedToRate(Map<Double, Map<LocalDateTime, 
-            LocalDateTime>> hoursMappedToRate) {
+    public void setHoursMappedToRate(Map<Double, Map<LocalTime, 
+            LocalTime>> hoursMappedToRate) {
         this.hoursMappedToRate = hoursMappedToRate;
     }
 
@@ -106,9 +134,10 @@ public class Assignment {
         this.shift = shift;
     }
     
-   private void setDefaultRate(String shift){
-       this.rate = getClient().getStandardRates().get(shift);
-   }
+    // DOES THIS METHOD BELONG IN HERE OR IN Client.java
+   //private void setDefaultRate(String shift){
+   //    this.rate = getClient().getStandardRates().get(shift);
+   //}
 
     private void getRateDifferentiatedHours() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -118,24 +147,42 @@ public class Assignment {
     //*************************************************************************
     //      SETTERS WITH VALIDATION
     
-     private void setPeriod(LocalDateTime startDateTime, 
-            LocalDateTime endDateTime){
+     private void setPeriod(LocalDate assignmentDate, LocalTime startTime, 
+        LocalTime endTime){
+        
+        startDateTime = LocalDateTime.of(assignmentDate, startTime);
+        endDateTime = LocalDateTime.of(assignmentDate, endTime);
+        if(startTime == null && endTime != null) {
+            throw new IllegalArgumentException("Must supply end time.");
+        }
+        if(startTime != null && endTime == null){
+            throw new IllegalArgumentException("Must supply start time.");
+        }
+        if(startTime == null && endTime == null){
+            try{
+                startTime = client.getDefaultStartTime(shift);
+                endTime = client.getDefaultEndTime(shift);
+            }
+            catch(Exception e){
+                throw e;
+            }
+        }
         
         if(startDateTime.isBefore(endDateTime)){
-            this.startDateTime = startDateTime;
-            this.endDateTime = endDateTime;
+            this.startTime = startTime;
+            this.endTime = endTime;
         }
         else {
             throw new IllegalArgumentException(
                     "The time and/or date of the ending of the shift ("+
-                            endDateTime + ")is before the start of the shift (" +
-                            startDateTime + ").");
+                            endTime + ")is before the start of the shift (" +
+                            startTime + ").");
         }
     }
      
-     public void setHoursMappedToRate(double rate, LocalDateTime startTime, 
-            LocalDateTime endTime){
-        Map<LocalDateTime, LocalDateTime> period;
+     public void setHoursMappedToRate(double rate, LocalTime startTime, 
+            LocalTime endTime){
+        Map<LocalTime, LocalTime> period;
         
         if(hoursMappedToRate == null){
             hoursMappedToRate = new HashMap<>();
@@ -143,6 +190,25 @@ public class Assignment {
         period = new HashMap<>();
         period.put(startTime, endTime);
         hoursMappedToRate.put(rate, period);
+    }
+    
+     public void setClient(Client client, String companyName) {
+        if(client == null){
+            createClient(companyName);
+        } else {
+            this.client = client;
+        }
+    }
+    
+    public void setLocation(String workLocation){
+        if(workLocation == null){
+            if(client.getDefaultLocation() != null){
+                this.location = client.getDefaultLocation(); 
+            }
+        }
+        else {
+            this.location = client.getLocations().get(workLocation);
+        }
     }
     
     //*************************************************************************

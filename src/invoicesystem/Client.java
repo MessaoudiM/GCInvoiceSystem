@@ -5,6 +5,8 @@
  */
 package invoicesystem;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,11 @@ public class Client {
     private String phoneNum;
     private String notes;
    
-    //move into a separate object
+    //maybe move into a separate object
     private Map<String, Double> standardRates; // key= shiftName, val= shiftRate
+    private Map<String, Map<String, LocalTime>> standardWorkingHours;
+    private Map<String, Integer> standardRestBreaks;
+    
     private int vat;
     private double travelAllowance; //Allowance per km
     private final InvoiceSystem invoiceSystem = InvoiceSystem.getInstance();
@@ -41,10 +46,10 @@ public class Client {
         try{ 
             if(Validation.isNotNull(companyName) && 
                Validation.isNotEmpty(companyName)){
+                locations = new HashMap<>();
                 this.companyName = companyName;
+                createMockMaps();
                 putEntryInMap(getClients(), companyName, this);
-                //putClientInClients(companyName);
-                //location = new Location();
             }
         }
         catch(Exception e){
@@ -54,6 +59,41 @@ public class Client {
     
     //*************************************************************************
     //      SIMPLE GETTERS AND SETTERS
+    
+    private void createMockMaps(){  
+        LocalTime startTime, endTime;
+        Map<String, LocalTime> workingHours;
+        HashMap<String, Double> ratesMap;
+        standardRates = new HashMap<>();
+        ratesMap = new HashMap<>();
+        workingHours = new HashMap<>();
+        standardWorkingHours = new HashMap<>();
+        
+        standardRestBreaks = new HashMap<>();
+        
+        //stdRates
+        ratesMap.put("Dag", 60.00);
+        setStandardRates(ratesMap);
+        ratesMap.put("Nacht", 80.00);
+        setStandardRates(ratesMap);
+        
+        //stdWorkingHours
+        startTime = LocalTime.of(8, 00);
+        endTime = LocalTime.of(17, 00);
+        workingHours.put("start", startTime);
+        workingHours.put("end", endTime);
+        standardWorkingHours.put("Dag", workingHours);
+        startTime = LocalTime.of(23, 00);
+        endTime = LocalTime.of(8, 00);
+        workingHours.put("start", startTime);
+        workingHours.put("end", endTime);
+        standardWorkingHours.put("Nacht", workingHours);
+        
+        //standardRestBreaks
+        standardRestBreaks.put("Dag", 60);
+        standardRestBreaks.put("Nacht", 90);
+
+    }
    
     @Override
     public String toString() {
@@ -94,8 +134,11 @@ public class Client {
         this.notes = notes;
         return this;
     }
-
-    public Map<String, Double> getStandardRates() {
+    public double getDefaultRate (String shift){
+        return getStandardRates().get(shift);
+    }
+    
+    private Map<String, Double> getStandardRates() {
         return standardRates;
     }
 
@@ -104,6 +147,25 @@ public class Client {
         return this;
     }
 
+    public LocalTime getDefaultStartTime(String shift){
+        return getStandardWorkingHours(shift).get("start");
+    }
+    
+    public LocalTime getDefaultEndTime(String shift){
+        return getStandardWorkingHours(shift).get("end");
+    }
+    
+    public int getDefaultRestBreak(String shift){
+        return getStandardRestBreaks().get(shift);
+    }
+    private Map<String, Integer> getStandardRestBreaks(){
+        return standardRestBreaks;
+    }
+    
+    private Map<String, LocalTime> getStandardWorkingHours(String shift){
+        return standardWorkingHours.get(shift);
+    }
+    
     public int getVat() {
         return vat;
     }
@@ -173,6 +235,23 @@ public class Client {
     
     public void setLocations(Map<String, Location> locations){
         this.locations = locations;
+    }
+    
+    public void createNewLocation(String desc, String streetName, 
+            String streetNumber, String zipCode, String city, 
+            int distanceFromHome){
+        
+        try{
+            Location location; 
+            location = new Location(desc, streetName, streetNumber, zipCode, 
+                    city, distanceFromHome);
+            putLocationInLocations(location.getDesc(), location);
+        
+        }
+        catch(Exception e){
+            throw e;
+        }
+        
     }
     
     public void putLocationInLocations(String desc, Location location){

@@ -29,9 +29,6 @@ public class Contact {
         return name;
     }
 
-    
- 
-
     public String getName() {
         return name;
     }
