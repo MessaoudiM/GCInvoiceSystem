@@ -7,6 +7,7 @@ package invoicesystem;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,8 @@ public class Client {
     
     
     private String companyName;
-    //private Map<String, Location> locations;
-    private List<Location> locations2;
+   
+    private List<Location> locations;
     private Location defaultLocation;
     private Location invoiceLocation;
     private String personsName;
@@ -47,8 +48,7 @@ public class Client {
         try{ 
             if(Validation.isNotNull(companyName) && 
                Validation.isNotEmpty(companyName)){
-                //locations = new HashMap<>();
-                locations2 = new ArrayList<>();
+                locations = new ArrayList<>();
                 this.companyName = companyName;
                 createMockMaps();
                 putEntryInMap(getClients(), companyName, this);
@@ -214,16 +214,6 @@ public class Client {
         this.vat = vat;
         return this;
     }
-
-    /*
-    public String getInvoiceAddress() {
-        return invoiceAddress();
-    }
-    
-    public void setInvoiceAddress(String invoiceAddress) {
-        this.invoiceAddress = invoiceAddress;
-    }*/
-    
     
     /**
      *
@@ -260,31 +250,46 @@ public class Client {
         return defaultLocation;
     }
     
+   
     public Client setDefaultLocation(Location location){
         this.defaultLocation = defaultLocation;
         return this;
     }
     
-    public Location findLocation(String location){
-        //return getLocations().get(location);
+    public Location getInvoiceLocation() {
+        return invoiceLocation;
+    }
+
+    public void setInvoiceLocation(Location invoiceLocation) {
+        this.invoiceLocation = invoiceLocation;
+    }
+      
+    public List<Location> getLocations(){
+        return locations;
     }
     
-    //public Map<String, Location> getLocations(){
-    //    return locations;
-    //}
-    
-    public List<Location> getLocations2(){
-        return locations2;
+    public void setLocations(List<Location> locations){
+        this.locations = locations;
     }
     
-    public void setLocations2(List<Location> locations2){
-        this.locations2 = locations2;
+   
+
+    //*************************************************************************
+    //      SETTERS WITH VALIDATION
+    
+     public Location findLocation(String searchString){
+        Location foundLocation = null;
+        for(Location location : getLocations()){
+            if(location.getDesc().contains(searchString))
+                //WITH DOUBLEBINDING WE COULD CREATE A LIST THAT IS
+                // UPDATED IMMEDIATELY WHILE USER ENTERS SEARCHSTRING
+                // TO INCORPORATE ALL POSSIBLE HITS ON THAT SEARCHSTRING
+                foundLocation = location;
+        }
+        //GUARD AGAINST NULL
+        return foundLocation;
     }
-    
-    //public void setLocations(Map<String, Location> locations){
-    //    this.locations = locations;
-    //}
-    
+  
     public void createNewLocation(String desc, String streetName, 
             String streetNumber, String zipCode, String city, 
             int distanceFromHome){
@@ -293,8 +298,7 @@ public class Client {
             Location location; 
             location = new Location(desc, streetName, streetNumber, zipCode, 
                     city, distanceFromHome);
-            //putLocationInLocations(location.getDesc(), location);
-            addLocationtoLocations2(location);
+            addLocationToLocations(location);
         }
         catch(Exception e){
             throw e;
@@ -304,7 +308,7 @@ public class Client {
     //CHECK DOUBLECHECK
     public Location getLocation(String locationDesc){
         Location foundLocation = null;
-        for(Location location : getLocations2()){
+        for(Location location : getLocations()){
             if(location.getDesc().equals(locationDesc)){
                 foundLocation = location;
             }
@@ -312,28 +316,17 @@ public class Client {
         //DEFEND AGAINST NULL
         return foundLocation;
     }
-    
-    //public void putLocationInLocations(String desc, Location location){
-    //    putEntryInMap(getLocations(), desc, location);
-    //}
-    
-    public void addLocationToLocations2(Location location){
+ 
+    public void addLocationToLocations(Location location){
         //VALIDATE AGAINST DOUBLE ENTRIES
-        getLocations2().add(location);
+        
+        if(getLocation(location.getDesc()) == null){
+            getLocations().add(location);
+        } else { 
+            throw new IllegalArgumentException(location.getDesc() +
+                    "already exists.");
+        }
     }
-
-    public Location getInvoiceLocation() {
-        return invoiceLocation;
-    }
-
-    public void setInvoiceLocation(Location invoiceLocation) {
-        this.invoiceLocation = invoiceLocation;
-    }
-    
-    
-    //*************************************************************************
-    //      SETTERS WITH VALIDATION
-    
     
     public Client setPersonsName(String personsName) {
         try {
