@@ -175,13 +175,10 @@ public class Assignment {
             throw e;
         }
     }
-    
-    
-    
+
     private void setPeriodFromDefaultWorkingHours(LocalDate startDate, 
             LocalDate endDate){
-        
-        LocalDateTime startDateTime, endDateTime;
+  
         LocalTime startTime, endTime;
         
         try{
@@ -192,19 +189,17 @@ public class Assignment {
             startTime = client.getDefaultStartTime(getShift());
             endTime = client.getDefaultEndTime(getShift());
 
-            startDateTime = LocalDateTime.of(startDate, startTime);
-            endDateTime = LocalDateTime.of(endDate, endTime);
-            //TODO:
-            //CHECK IF PERIOD BETWEEN STARTDATETIME-ENDDATETIME
-            //SPANS MULTIPLE DAYS AND ACT ACCORDINGLY
+                //TODO:
+                //CHECK IF PERIOD BETWEEN STARTDATETIME-ENDDATETIME
+                //SPANS MULTIPLE DAYS AND ACT ACCORDINGLY
             
-            // wrap around midnight
+            this.startDateTime = LocalDateTime.of(startDate, startTime);
             if(startDateTime.isAfter(endDateTime)){
-                this.startDateTime = startDateTime;
-                this.endDateTime = endDateTime.plusDays(1);
+                // wrap around midnight
+                this.endDateTime = 
+                        LocalDateTime.of(endDate, endTime).plusDays(1);
             } else {
-                this.startDateTime = startDateTime;
-                this.endDateTime = endDateTime;
+                this.endDateTime = LocalDateTime.of(endDate, endTime);
             }
         }
         catch(Exception e){
@@ -215,15 +210,13 @@ public class Assignment {
     private void setPeriodFromUserInput(LocalDate startDate, LocalDate endDate, 
             LocalTime startTime, LocalTime endTime){
         
-        LocalDateTime startDateTime, endDateTime;
-        
         try{
             if(endDate == null){
                 endDate = startDate;
             }
-            startDateTime = LocalDateTime.of(startDate, startTime);
-            endDateTime = LocalDateTime.of(endDate, endTime);
-            EndDateTimeIsNotBeforeStartDateTime(startDateTime, endDateTime);
+            EndDateTimeIsNotBeforeStartDateTime(
+                    LocalDateTime.of(startDate, startTime), 
+                    LocalDateTime.of(endDate, endTime));
         }
         catch(Exception e){
             throw e;
@@ -276,7 +269,9 @@ public class Assignment {
             }
         }
         else {
-            this.location = client.getLocations().get(workLocation);
+            this.location = client.getLocations(String workLocation);
+            //this.location = client.findLocation(workLocation);
+            //this.location = client.getLocations().get(workLocation);
         }
     }
     

@@ -21,9 +21,10 @@ public class Client {
     
     
     private String companyName;
-    private Map<String, Location> locations;
-    
+    //private Map<String, Location> locations;
+    private List<Location> locations2;
     private Location defaultLocation;
+    private Location invoiceLocation;
     private String personsName;
     private String emailAddress;
     private String phoneNum;
@@ -46,7 +47,8 @@ public class Client {
         try{ 
             if(Validation.isNotNull(companyName) && 
                Validation.isNotEmpty(companyName)){
-                locations = new HashMap<>();
+                //locations = new HashMap<>();
+                locations2 = new ArrayList<>();
                 this.companyName = companyName;
                 createMockMaps();
                 putEntryInMap(getClients(), companyName, this);
@@ -264,16 +266,24 @@ public class Client {
     }
     
     public Location findLocation(String location){
-        return getLocations().get(location);
+        //return getLocations().get(location);
     }
     
-    public Map<String, Location> getLocations(){
-        return locations;
+    //public Map<String, Location> getLocations(){
+    //    return locations;
+    //}
+    
+    public List<Location> getLocations2(){
+        return locations2;
     }
     
-    public void setLocations(Map<String, Location> locations){
-        this.locations = locations;
+    public void setLocations2(List<Location> locations2){
+        this.locations2 = locations2;
     }
+    
+    //public void setLocations(Map<String, Location> locations){
+    //    this.locations = locations;
+    //}
     
     public void createNewLocation(String desc, String streetName, 
             String streetNumber, String zipCode, String city, 
@@ -283,18 +293,43 @@ public class Client {
             Location location; 
             location = new Location(desc, streetName, streetNumber, zipCode, 
                     city, distanceFromHome);
-            putLocationInLocations(location.getDesc(), location);
-        
+            //putLocationInLocations(location.getDesc(), location);
+            addLocationtoLocations2(location);
         }
         catch(Exception e){
             throw e;
         }
-        
     }
     
-    public void putLocationInLocations(String desc, Location location){
-        putEntryInMap(getLocations(), desc, location);
+    //CHECK DOUBLECHECK
+    public Location getLocation(String locationDesc){
+        Location foundLocation = null;
+        for(Location location : getLocations2()){
+            if(location.getDesc().equals(locationDesc)){
+                foundLocation = location;
+            }
+        }
+        //DEFEND AGAINST NULL
+        return foundLocation;
     }
+    
+    //public void putLocationInLocations(String desc, Location location){
+    //    putEntryInMap(getLocations(), desc, location);
+    //}
+    
+    public void addLocationToLocations2(Location location){
+        //VALIDATE AGAINST DOUBLE ENTRIES
+        getLocations2().add(location);
+    }
+
+    public Location getInvoiceLocation() {
+        return invoiceLocation;
+    }
+
+    public void setInvoiceLocation(Location invoiceLocation) {
+        this.invoiceLocation = invoiceLocation;
+    }
+    
     
     //*************************************************************************
     //      SETTERS WITH VALIDATION
