@@ -4,4 +4,4 @@ This project is under MIT license.
 
 I will compile a list of resources I used and which I recommend:
 
-<a href="https://www.browserstack.com/"><img src="https://github.com/MessaoudiM/GCInvoiceSystem/blob/master/docs/Logo-01.svg"></a>
+<a href="https://www.browserstack.com/"><img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png"></a>
